@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import RadioButtonUncheckedOutlinedIcon from "@material-ui/icons/RadioButtonUncheckedOutlined";
@@ -12,25 +12,28 @@ const Container = styled.button`
   width: 100px;
 `;
 
-export default class BoardSquare extends Component {
-  render = () => {
-    const { row, column, movePlayed, makeMove, player } = this.props;
-    if (movePlayed === 0) {
-      return (
-        <Container onClick={() => makeMove(row, column, player)}></Container>
-      );
-    } else if (movePlayed === 1) {
-      return (
-        <Container onClick={() => makeMove(row, column, player)}>
-          <CloseIcon fontSize="large" />
-        </Container>
-      );
-    } else {
-      return (
-        <Container onClick={() => makeMove(row, column, player)}>
-          <RadioButtonUncheckedOutlinedIcon fontSize="large" />
-        </Container>
-      );
-    }
-  };
+export default function BoardSquare({
+  row,
+  column,
+  movePlayed,
+  makeMove,
+  player,
+}) {
+  if (movePlayed === 0) {
+    return (
+      <Container onClick={() => makeMove(row, column, player)}></Container>
+    );
+  } else if (movePlayed === 1) {
+    return (
+      <Container onClick={() => makeMove(row, column, player)}>
+        <CloseIcon fontSize="large" />
+      </Container>
+    );
+  } else {
+    return (
+      <Container onClick={() => makeMove(row, column, player)}>
+        <RadioButtonUncheckedOutlinedIcon fontSize="large" />
+      </Container>
+    );
+  }
 }
