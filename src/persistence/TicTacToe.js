@@ -3,6 +3,8 @@ export default class TicTacToe {
     this.gameScore = { 1: 0, 2: 0 };
     if (!localStorage.getItem("gameScore")) {
       localStorage.setItem("gameScore", JSON.stringify(this.gameScore));
+    } else {
+      this.gameScore = JSON.parse(localStorage.getItem("gameScore"));
     }
   }
 

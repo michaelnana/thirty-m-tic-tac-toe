@@ -1,5 +1,6 @@
 import { validWaysToWin } from "./Wins";
 import TicTacToe from "../persistence/TicTacToe";
+import { GAME_ON, PLAYER_ONE_WINS, PLAYER_TWO_WINS, DRAW } from "./GameStatuses";
 
 export default class GameState {
   constructor() {
@@ -60,9 +61,9 @@ export default class GameState {
     }
     if (this.isADraw()) {
       this.resetBoard();
-      return 3;
+      return DRAW;
     }
-    return 0;
+    return GAME_ON;
   }
 
   resetBoard = () => {
