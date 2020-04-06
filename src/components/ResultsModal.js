@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { Modal } from "@material-ui/core";
 import styled, { keyframes } from "styled-components";
@@ -26,11 +28,17 @@ const Content = styled.div`
   top: 40%;
 `;
 
+type Props = {
+  onClose: Function,
+  resultsMessage: string,
+  shouldDisplay: boolean
+};
+
 export default function ResultsModal({
   shouldDisplay,
   onClose,
   resultsMessage,
-}) {
+}: Props) {
   return (
     <Modal
       open={shouldDisplay}

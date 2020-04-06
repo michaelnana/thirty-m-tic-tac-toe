@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import styled from "styled-components";
 import BoardSquare from "./BoardSquare";
@@ -43,7 +45,17 @@ const spots = [
   { row: 2, column: 2 },
 ];
 
-export default function Board({ playerToMakeMove, makeMove, movePlayed }) {
+type Props = {
+  makeMove: Function,
+  movePlayed: Function,
+  playerToMakeMove: number,
+};
+
+export default function Board({
+  playerToMakeMove,
+  makeMove,
+  movePlayed,
+}: Props) {
   const renderPlayerIcon = () => {
     if (playerToMakeMove === 1) {
       return (

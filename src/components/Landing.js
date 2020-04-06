@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import Board from "./Board";
@@ -5,6 +7,7 @@ import ResultsModal from "./ResultsModal";
 import Navigation from "./Navigation";
 import { addMove, getGame, resetGame } from "../controllers/GameController";
 import isEmpty from "lodash/isEmpty";
+import { DRAW } from "../domain/GameStatuses";
 
 const Container = styled.div`
   align-items: center;
@@ -15,22 +18,27 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-export default class Landing extends PureComponent {
-  constructor() {
-    super();
-    this.state = {
-      playerToMakeMove: 1,
-      displayResults: false,
-      resultsMessage: "",
-      gameDetails: {},
-    };
-  }
+type Props = {};
+type State = {
+  playerToMakeMove: number,
+  displayResults: boolean,
+  resultsMessage: string,
+  gameDetails: Object,
+};
+
+export default class Landing extends PureComponent<Props, State> {
+  state = {
+    playerToMakeMove: 1,
+    displayResults: false,
+    resultsMessage: "",
+    gameDetails: {},
+  };
 
   componentDidMount = () => {
     this.setState(() => ({ gameDetails: getGame() }));
   };
 
-  switchPlayer = () => {
+  togglePlayer = () => {
     if (this.state.playerToMakeMove === 1) {
       this.setState(() => ({ playerToMakeMove: 2 }));
     } else {
@@ -38,31 +46,31 @@ export default class Landing extends PureComponent {
     }
   };
 
-  makeMove = (row, column, player) => {
-    const response = addMove(player, {
-      row: row,
-      column: column,
+  makeMove = (row: number, column: number, player: number) => {
+    const { gameStatus, gameDetails } = addMove(player, {
+      row,
+      column,
     });
-    if (response.gameStatus === player) {
+
+    if (gameStatus === player) {
       this.setState(() => ({
         displayResults: true,
         resultsMessage: `Player ${player} wins!`,
-        gameDetails: response.gameDetails,
       }));
-    } else if (response.gameStatus === 3) {
+    } else if (gameStatus === DRAW) {
       this.setState(() => ({
         displayResults: true,
         resultsMessage: `It's a draw`,
-        gameDetails: response.gameDetails,
       }));
     }
+
     this.setState(() => ({
-      gameDetails: response.gameDetails,
+      gameDetails: gameDetails,
     }));
-    this.switchPlayer();
+    this.togglePlayer();
   };
 
-  movePlayed = (row, column) => {
+  movePlayed = (row: number, column: number) => {
     const { gameDetails } = this.state;
     return isEmpty(gameDetails) ? 0 : gameDetails.board[row][column];
   };
@@ -73,7 +81,12 @@ export default class Landing extends PureComponent {
   };
 
   render = () => {
-    const { gameDetails } = this.state;
+    const {
+      displayResults,
+      gameDetails,
+      playerToMakeMove,
+      resultsMessage,
+    } = this.state;
     return (
       <Container>
         <Navigation
@@ -82,8 +95,8 @@ export default class Landing extends PureComponent {
           resetGame={this.resetScore}
         />
         <ResultsModal
-          shouldDisplay={this.state.displayResults}
-          resultsMessage={this.state.resultsMessage}
+          shouldDisplay={displayResults}
+          resultsMessage={resultsMessage}
           onClose={() => {
             this.setState((prevState) => ({
               displayResults: !prevState.displayResults,
@@ -91,7 +104,7 @@ export default class Landing extends PureComponent {
           }}
         />
         <Board
-          playerToMakeMove={this.state.playerToMakeMove}
+          playerToMakeMove={playerToMakeMove}
           makeMove={this.makeMove}
           movePlayed={this.movePlayed}
         />

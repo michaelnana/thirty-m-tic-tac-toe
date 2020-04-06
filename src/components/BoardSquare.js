@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
@@ -12,13 +14,21 @@ const Container = styled.button`
   width: 100px;
 `;
 
+type Props = {
+  column: number,
+  makeMove: Function,
+  movePlayed: number,
+  player: number,
+  row: number,
+};
+
 export default function BoardSquare({
   row,
   column,
   movePlayed,
   makeMove,
   player,
-}) {
+}: Props) {
   if (movePlayed === 0) {
     return (
       <Container onClick={() => makeMove(row, column, player)}></Container>

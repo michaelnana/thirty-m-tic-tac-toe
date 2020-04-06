@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import styled from "styled-components";
 import { Button, Chip } from "@material-ui/core";
@@ -44,7 +46,13 @@ const Player = styled.p`
   font-weight: 500;
 `;
 
-export default function Navigation({ player1, player2, resetGame }) {
+type Props = {
+  player1: number,
+  player2: number,
+  resetGame: Function,
+};
+
+export default function Navigation({ player1, player2, resetGame }: Props) {
   return (
     <Container>
       <Logo>
