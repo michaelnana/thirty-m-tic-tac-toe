@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Board from "./Board";
 import ResultsModal from "./ResultsModal";
 import Navigation from "./Navigation";
-import { addMove, getGame, resetGame } from "../controllers/GameController";
+import { addMove, getGame, resetBoard, resetGame } from "../controllers/GameController";
 import isEmpty from "lodash/isEmpty";
 import { DRAW } from "../domain/GameStatuses";
 
@@ -98,8 +98,10 @@ export default class Landing extends PureComponent<Props, State> {
           shouldDisplay={displayResults}
           resultsMessage={resultsMessage}
           onClose={() => {
+            resetBoard()
             this.setState((prevState) => ({
               displayResults: !prevState.displayResults,
+              gameDetails: getGame()
             }));
           }}
         />

@@ -55,12 +55,10 @@ export default class GameState {
         this.board[gameWinners[i][2].row][gameWinners[i][2].column] === player
       ) {
         this.ticTacToe.saveGameScore(player);
-        this.resetBoard();
         return player;
       }
     }
     if (this.isADraw()) {
-      this.resetBoard();
       return DRAW;
     }
     return GAME_ON;
