@@ -45,10 +45,6 @@ export default class GameState {
 
   checkGameStatus(player) {
     const gameWinners = Object.values(validWaysToWin);
-    if (this.isADraw()) {
-      this.resetBoard();
-      return 3;
-    }
     for (var i = 0; i < gameWinners.length; i++) {
       if (
         this.board[gameWinners[i][0].row][gameWinners[i][0].column] ===
@@ -61,6 +57,10 @@ export default class GameState {
         this.resetBoard();
         return player;
       }
+    }
+    if (this.isADraw()) {
+      this.resetBoard();
+      return 3;
     }
     return 0;
   }
