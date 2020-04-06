@@ -1,6 +1,6 @@
 import { validWaysToWin } from "./Wins";
 import TicTacToe from "../persistence/TicTacToe";
-import { GAME_ON, PLAYER_ONE_WINS, PLAYER_TWO_WINS, DRAW } from "./GameStatuses";
+import { GAME_ON, DRAW } from "./GameStatuses";
 
 export default class GameState {
   constructor() {

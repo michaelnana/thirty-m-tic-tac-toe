@@ -78,8 +78,9 @@ export default function Board({
         {renderPlayerIcon()} Player {playerToMakeMove} turn
       </GameMove>
       <TicTacToeBoard>
-        {spots.map((pos) => (
+        {spots.map((pos, index) => (
           <BoardSquare
+            key={index}
             row={pos.row}
             column={pos.column}
             player={playerToMakeMove}

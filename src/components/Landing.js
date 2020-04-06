@@ -1,11 +1,16 @@
 // @flow
 
-import React, { PureComponent } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Board from "./Board";
 import ResultsModal from "./ResultsModal";
 import Navigation from "./Navigation";
-import { addMove, getGame, resetBoard, resetGame } from "../controllers/GameController";
+import {
+  addMove,
+  getGame,
+  resetBoard,
+  resetGame,
+} from "../controllers/GameController";
 import isEmpty from "lodash/isEmpty";
 import { DRAW } from "../domain/GameStatuses";
 
@@ -18,99 +23,69 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-type Props = {};
-type State = {
-  playerToMakeMove: number,
-  displayResults: boolean,
-  resultsMessage: string,
-  gameDetails: Object,
-};
+export default function Landing() {
+  const [playerToMakeMove, setPlayerToMakeMove] = useState(1);
+  const [displayResults, setDisplayResults] = useState(false);
+  const [resultsMessage, setResultsMessage] = useState("");
+  const [gameDetails, setGameDetails] = useState({});
+  useEffect(() => setGameDetails(getGame()), []);
 
-export default class Landing extends PureComponent<Props, State> {
-  state = {
-    playerToMakeMove: 1,
-    displayResults: false,
-    resultsMessage: "",
-    gameDetails: {},
-  };
-
-  componentDidMount = () => {
-    this.setState(() => ({ gameDetails: getGame() }));
-  };
-
-  togglePlayer = () => {
-    if (this.state.playerToMakeMove === 1) {
-      this.setState(() => ({ playerToMakeMove: 2 }));
+  const togglePlayer = () => {
+    if (playerToMakeMove === 1) {
+      setPlayerToMakeMove(2);
     } else {
-      this.setState(() => ({ playerToMakeMove: 1 }));
+      setPlayerToMakeMove(1);
     }
   };
 
-  makeMove = (row: number, column: number, player: number) => {
+  const makeMove = (row: number, column: number, player: number) => {
     const { gameStatus, gameDetails } = addMove(player, {
       row,
       column,
     });
 
     if (gameStatus === player) {
-      this.setState(() => ({
-        displayResults: true,
-        resultsMessage: `Player ${player} wins!`,
-      }));
+      setDisplayResults(true);
+      setResultsMessage(`Player ${player} wins!`);
     } else if (gameStatus === DRAW) {
-      this.setState(() => ({
-        displayResults: true,
-        resultsMessage: `It's a draw`,
-      }));
+      setDisplayResults(true);
+      setResultsMessage("It's a draw!");
     }
-
-    this.setState(() => ({
-      gameDetails: gameDetails,
-    }));
-    this.togglePlayer();
+    setGameDetails(gameDetails);
+    togglePlayer();
   };
 
-  movePlayed = (row: number, column: number) => {
-    const { gameDetails } = this.state;
+  const movePlayed = (row: number, column: number) => {
     return isEmpty(gameDetails) ? 0 : gameDetails.board[row][column];
   };
 
-  resetScore = () => {
+  const resetScore = () => {
     const gameDetails = resetGame();
-    this.setState(() => ({ playerToMakeMove: 1, gameDetails: gameDetails }));
+    setPlayerToMakeMove(1);
+    setGameDetails(gameDetails);
   };
 
-  render = () => {
-    const {
-      displayResults,
-      gameDetails,
-      playerToMakeMove,
-      resultsMessage,
-    } = this.state;
-    return (
-      <Container>
-        <Navigation
-          player1={isEmpty(gameDetails) ? 0 : gameDetails.gameScore[1]}
-          player2={isEmpty(gameDetails) ? 0 : gameDetails.gameScore[2]}
-          resetGame={this.resetScore}
-        />
-        <ResultsModal
-          shouldDisplay={displayResults}
-          resultsMessage={resultsMessage}
-          onClose={() => {
-            resetBoard()
-            this.setState((prevState) => ({
-              displayResults: !prevState.displayResults,
-              gameDetails: getGame()
-            }));
-          }}
-        />
-        <Board
-          playerToMakeMove={playerToMakeMove}
-          makeMove={this.makeMove}
-          movePlayed={this.movePlayed}
-        />
-      </Container>
-    );
-  };
+  return (
+    <Container>
+      <Navigation
+        player1={isEmpty(gameDetails) ? 0 : gameDetails.gameScore[1]}
+        player2={isEmpty(gameDetails) ? 0 : gameDetails.gameScore[2]}
+        resetGame={resetScore}
+      />
+      <ResultsModal
+        shouldDisplay={displayResults}
+        resultsMessage={resultsMessage}
+        onClose={() => {
+          resetBoard();
+          setDisplayResults(!displayResults);
+          setGameDetails(getGame());
+        }}
+      />
+      <Board
+        playerToMakeMove={playerToMakeMove}
+        makeMove={makeMove}
+        movePlayed={movePlayed}
+      />
+    </Container>
+  );
 }
