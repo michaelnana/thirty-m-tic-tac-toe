@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import BoardSquare from "./BoardSquare";
+import { Avatar } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import RadioButtonUncheckedOutlinedIcon from "@material-ui/icons/RadioButtonUncheckedOutlined";
 
 const Container = styled.div`
   align-items: center;
@@ -18,9 +21,14 @@ const TicTacToeBoard = styled.div`
 `;
 
 const GameMove = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
   margin-bottom: 20px;
   font-size: 18px;
   font-weight: 500;
+  width: 150px;
 `;
 
 const spots = [
@@ -36,9 +44,27 @@ const spots = [
 ];
 
 export default function Board({ playerToMakeMove, makeMove, movePlayed }) {
+  const renderPlayerIcon = () => {
+    if (playerToMakeMove === 1) {
+      return (
+        <Avatar>
+          <CloseIcon />
+        </Avatar>
+      );
+    } else {
+      return (
+        <Avatar>
+          <RadioButtonUncheckedOutlinedIcon />
+        </Avatar>
+      );
+    }
+  };
   return (
     <Container>
-      <GameMove>Player {playerToMakeMove} turn</GameMove>
+      <GameMove>
+        {" "}
+        {renderPlayerIcon()} Player {playerToMakeMove} turn
+      </GameMove>
       <TicTacToeBoard>
         {spots.map((pos) => (
           <BoardSquare

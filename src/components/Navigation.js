@@ -20,19 +20,28 @@ const Logo = styled.div`
   display: flex;
   height: 100%;
   margin-left: 10px;
-  width: 200px;
+  width: 30%;
 `;
 
 const Content = styled.div`
   align-items: center;
   height: 100%;
   display: flex;
-  justify-content: center;
   padding-left: 100px;
+  width: 70%;
 `;
 
-const Player = styled.div`
-  margin: 0 10px;
+const PlayerDetails = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  margin-right: 30px;
+  width: 130px;
+`;
+
+const Player = styled.p`
+  font-weight: 500;
 `;
 
 export default function Navigation({ player1, player2, resetGame }) {
@@ -42,13 +51,17 @@ export default function Navigation({ player1, player2, resetGame }) {
         <h3> Thirty M Tic Tac Toe</h3>
       </Logo>
       <Content>
-        <Player>Player 1</Player>
-        <CloseIcon size="lg" />
-        <Chip color="primary" label={player1} />
-        <Player>Player 2</Player>
-        <RadioButtonUncheckedOutlinedIcon />
-        <Chip color="primary" label={player2} />
-        <Button variant="outlined" color="primary" onClick={resetGame}>
+        <PlayerDetails>
+          <Player>Player 1</Player>
+          <CloseIcon fontSize="large" />
+          <Chip color="default" label={player1} />
+        </PlayerDetails>
+        <PlayerDetails>
+          <Player>Player 2</Player>
+          <RadioButtonUncheckedOutlinedIcon fontSize="large" />
+          <Chip color="default" label={player2} />
+        </PlayerDetails>
+        <Button variant="outlined" color="default" onClick={resetGame}>
           Reset Game
         </Button>
       </Content>
