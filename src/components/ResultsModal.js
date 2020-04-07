@@ -16,9 +16,9 @@ const rotate = keyframes`
 
 const Content = styled.div`
   background-color: white;
-  animation: ${rotate} 1s linear;
+  animation: ${rotate} 0.5s linear;
   box-shadow: 2px 2px;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 800;
   left: 40%;
   position: absolute;

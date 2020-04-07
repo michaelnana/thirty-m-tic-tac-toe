@@ -12,20 +12,19 @@ export default class GameState {
     this.ticTacToe = new TicTacToe();
   }
 
-  getDetails() {
+  getDetails = () => {
     return {
       board: this.board,
       gameScore: this.ticTacToe.getGameScore(),
     };
   }
 
-  addMove(player, position) {
+  addMove = (player: number, position: Object) => {
     if (this.isValidMove(position)) {
       this.board[position.row][position.column] = player;
-      const gameStatus = this.checkGameStatus(player);
       return {
         gameDetails: this.getDetails(),
-        gameStatus: gameStatus,
+        gameStatus: this.checkGameStatus(player),
         move: `Player ${player} selected row: ${position.row} column: ${position.column}`,
         validMove: true,
       };
@@ -40,11 +39,11 @@ export default class GameState {
     }
   }
 
-  isValidMove(position) {
+  isValidMove = (position: Object) => {
     return this.board[position.row][position.column] === 0;
   }
 
-  checkGameStatus(player) {
+  checkGameStatus = (player: number) => {
     const gameWinners = Object.values(validWaysToWin);
     for (var i = 0; i < gameWinners.length; i++) {
       if (
@@ -78,7 +77,7 @@ export default class GameState {
     return this.getDetails();
   };
 
-  isADraw() {
+  isADraw = () => {
     for (var i = 0; i < this.board.length; i++) {
       for (var j = 0; j < this.board[i].length; j++) {
         if (this.board[i][j] === 0) {
